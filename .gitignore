@@ -1,4 +1,7 @@
-build
+build/
+tst
+.gradle/
+.idea/
 
 # Compiled class file
 *.class
