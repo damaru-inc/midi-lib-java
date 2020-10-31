@@ -14,7 +14,8 @@ class ScaleFactoryTest {
 
 	@Test
 	void majorScaleTest() {
-		List<Note> notes = ScaleFactory.generateScale(ScaleFactory.MAJOR_SCALE, 60, 72);
+		Note keyNote = new Note(0);
+		List<Note> notes = ScaleFactory.generateNoteList(ScaleFactory.MAJOR_SCALE, keyNote,60, 72);
 
 		for (Note note : notes) {
 			log.info(note.toString());
@@ -27,15 +28,27 @@ class ScaleFactoryTest {
 
 	@Test
 	void wholeToneTest() {
-		List<Note> notes = ScaleFactory.generateScale(ScaleFactory.WHOLE_TONE_SCALE, 60, 72);
+		Note keyNote = new Note(0);
+		List<Note> notes = ScaleFactory.generateNoteList(ScaleFactory.WHOLE_TONE_SCALE, keyNote,60, 72);
 
-		for (Note note : notes) {
-			log.info(note.toString());
-		}
+//		for (Note note : notes) {
+//			log.info(note.toString());
+//		}
 
 		assertEquals(7, notes.size());
 		assertEquals("C4", notes.get(0).getName());
 		assertEquals("A#4", notes.get(5).getName());
+	}
+
+	@Test
+	void scaleStartingOnSecondDegreeTest() {
+		Note keyNote = new Note(0);
+		List<Note> notes = ScaleFactory.generateNoteList(ScaleFactory.MAJOR_SCALE, keyNote,61, 74);
+		assertEquals(8, notes.size());
+		assertEquals("D4", notes.get(0).getName());
+		assertEquals("F4", notes.get(2).getName());
+		assertEquals("C5", notes.get(6).getName());
+		assertEquals("D5", notes.get(7).getName());
 	}
 
 }

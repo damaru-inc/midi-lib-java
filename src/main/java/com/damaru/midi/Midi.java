@@ -92,37 +92,56 @@ public class Midi {
 		return instruments;
 	}
 
-	public static MidiEvent createNoteOnEvent(int key, int velocity, long tick) throws Exception {
-		//log.debug("key: " + key + " vel: " + velocity + " tick: " + tick);
-		return createNoteEvent(ShortMessage.NOTE_ON, key, velocity, tick);
-	}
-
-	public static MidiEvent createNoteOffEvent(int key, long tick) throws Exception {
-		return createNoteEvent(ShortMessage.NOTE_OFF, key, 0, tick);
-	}
-
-	public static MidiEvent createNoteEvent(int command, int key, int velocity, long tick) throws Exception {
+	public static MidiEvent createNoteEvent(int command, int channel, int key, int velocity, long tick) throws Exception {
 		//log.debug("command: " + command + " key: " + key + " vel: " + velocity + " tick: " + tick);
-		ShortMessage message = createShortMessage(command, key, velocity);
+		ShortMessage message = createShortMessage(command, channel, key, velocity);
 		MidiEvent event = new MidiEvent(message, tick);
 		return event;
 	}
 
-	public static ShortMessage createNoteOnMessage(int key, int velocity) throws Exception {
-		return createShortMessage(ShortMessage.NOTE_ON, key, velocity);
+	public static MidiEvent createNoteOffEvent(int channel, int key, long tick) throws Exception {
+		return createNoteEvent(ShortMessage.NOTE_OFF, channel, key, 0, tick);
 	}
 
-	public static ShortMessage createNoteOffMessage(int key, int velocity) throws Exception {
-		return createShortMessage(ShortMessage.NOTE_OFF, key, velocity);
+	public static MidiEvent createNoteOnEvent(int channel, int key, int velocity, long tick) throws Exception {
+		//log.debug("key: " + key + " vel: " + velocity + " tick: " + tick);
+		return createNoteEvent(ShortMessage.NOTE_ON, channel, key, velocity, tick);
 	}
 
-	public static ShortMessage createShortMessage(int command, int key, int velocity) throws Exception {
+	public static ShortMessage createNoteOffMessage(int channel, int key, int velocity) throws Exception {
+		return createShortMessage(ShortMessage.NOTE_OFF, channel, key, velocity);
+	}
+
+	public static ShortMessage createNoteOnMessage(int channel, int key, int velocity) throws Exception {
+		return createShortMessage(ShortMessage.NOTE_ON, channel, key, velocity);
+	}
+
+	public static ShortMessage createProgramChangeMessage(int channel, int program) throws Exception {
+		return createShortMessage(ShortMessage.PROGRAM_CHANGE, channel, program, program);
+	}
+
+	public static ShortMessage createShortMessage(int command, int channel, int key, int velocity) throws Exception {
 		ShortMessage message = new ShortMessage();
-		message.setMessage(command,
-				0, // always on channel 1
-				key,
-				velocity);
+		message.setMessage(command, channel, key, velocity);
 		return message;
 	}
 
+	public static void sendNoteOffMessage(Receiver receiver, int channel, int key, int velocity) throws Exception {
+		ShortMessage shortMessage = createNoteOffMessage(channel, key, velocity);
+		sendMessage(receiver, shortMessage);
+	}
+
+	public static void sendNoteOnMessage(Receiver receiver, int channel, int key, int velocity) throws Exception {
+		ShortMessage shortMessage = createNoteOnMessage(channel, key, velocity);
+		sendMessage(receiver, shortMessage);
+	}
+
+	public static void sendProgramChangeMessage(Receiver receiver, int channel, int program) throws Exception {
+		ShortMessage shortMessage = createProgramChangeMessage(channel, program);
+		sendMessage(receiver, shortMessage);
+	}
+
+	public static void sendMessage(Receiver receiver, ShortMessage shortMessage) {
+		receiver.send(shortMessage, -1);
+	}
 }

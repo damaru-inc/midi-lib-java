@@ -1,7 +1,6 @@
 package com.damaru.midi;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +21,7 @@ public class MidiTest {
 		assertTrue(devices.size() > 0);
 		for (MidiDeviceValue d : devices) {
 			final MidiDevice.Info di = d.getMidiDevice().getDeviceInfo();
-			log.info(d.toString() + "----" + di.getDescription() + "---" + di.getName() + "---" + di.getVendor() + "---" + di.getVersion());
+			log.debug(d.toString() + "----" + di.getDescription() + "---" + di.getName() + "---" + di.getVendor() + "---" + di.getVersion());
 		}
 	}
 

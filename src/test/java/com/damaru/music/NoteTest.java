@@ -11,7 +11,7 @@ public class NoteTest {
 		Note note = new Note(61);
 		String name = note.getName();
 		String expected = "C#4";
-		assertEquals("Bad note description", expected, name);
+		assertEquals(expected, name);
 	}
 
 	@Test
@@ -19,16 +19,15 @@ public class NoteTest {
 		Note note = new Note(61);
 		String name = note.getName(Note.Accidental.FLAT);
 		String expected = "Db4";
-		assertEquals("Bad note description", expected, name);
+		assertEquals(expected, name);
 	}
 
+
 	@Test
-	public void testDefaultFlatName() {
-		Note.setDefaultAccidental(Note.Accidental.FLAT);
-		Note note = new Note(61);
-		String name = note.getName();
+	public void testGetFullName() {
+		Note note = new Note(61, Note.Accidental.FLAT);
 		String expected = "Db4";
-		assertEquals("Bad note description", expected, name);
+		assertEquals("Db4", note.getName());
 	}
 
 }
